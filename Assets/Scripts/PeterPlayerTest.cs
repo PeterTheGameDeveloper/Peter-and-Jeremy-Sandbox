@@ -7,8 +7,8 @@ public class PeterPlayerTest : MonoBehaviour
     private Animator playerAnimator;
     private bool isRunning = false;
 
-    public float xMoveSpeed = 5.0f;
-    public float yMoveSpeed = 2.5f;
+    public float xMoveSpeed = 0.25f;
+    public float yMoveSpeed = 0.25f;
 
     private void Start()
     {
@@ -51,5 +51,6 @@ public class PeterPlayerTest : MonoBehaviour
         }
 
         transform.position = currentPlayerPosition;
+        Debug.Log(transform.position);
     }
 }

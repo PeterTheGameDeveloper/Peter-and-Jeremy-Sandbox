@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCharacter: {fileID: 1079376637}
-  smoothSpeed: 0.125
+  smoothSpeed: 0.4
   offset: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
@@ -464,7 +464,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1459458051413904079, guid: 3accdbde4e56f5c4e9cfa311b8cef55f, type: 3}
+  m_Sprite: {fileID: 1459458051413904079, guid: 3accdbde4e56f5c4e9cfa311b8cef55f,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -523,7 +524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac053f6fadccad41bc6cf2ee18ef857, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xMoveSpeed: 0.5
+  xMoveSpeed: 0.25
   yMoveSpeed: 0.25
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
