@@ -9,14 +9,17 @@ public class EnemyController : MonoBehaviour
     public int hitPoints = 10;
 
     SpriteRenderer enemySpriteRenderer;
+    Animator enemyAnimator;
 
     private void Start()
     {
         enemySpriteRenderer = GetComponent<SpriteRenderer>();
+        enemyAnimator = GetComponent<Animator>();
     }
 
     void Update()
     {
+        enemyAnimator.SetBool("IsHit", false);
         if (playerTransform.position == null)
         {
             return;
@@ -32,11 +35,8 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(int damageTaken)
     {
-        for (int i = 0; i < 50; i++)
-        {
-            enemySpriteRenderer.color = Color.red;
-            enemySpriteRenderer.color = Color.white;
-        }
+        enemyAnimator.SetBool("IsHit", true);
+        StartCoroutine(FlashRed());
         hitPoints -= damageTaken;
     }
 
@@ -44,5 +44,24 @@ public class EnemyController : MonoBehaviour
     {
         Vector3 positionToMoveTowards = Vector3.Lerp(transform.position, new Vector3(transform.position.x + (direction * knockBack), transform.position.y, transform.position.z), enemyMoveSpeed);
         transform.position = positionToMoveTowards;
+    }
+
+    private IEnumerator FlashRed()
+    {
+        float timerDuration = 2.0f;
+        while (timerDuration > 0)
+        {
+            timerDuration -= Time.deltaTime;
+            if ((timerDuration > 1.5f && timerDuration <= 2.0f) || (timerDuration > 0.5f && timerDuration <= 1.0f))
+            {
+                enemySpriteRenderer.color = Color.red;
+            }
+            else if ((timerDuration > 1.0f && timerDuration <= 1.5f) || (timerDuration > 0 && timerDuration <= 0.5f))
+            {
+                enemySpriteRenderer.color = Color.white;
+            }
+            yield return null;
+        }
+        enemySpriteRenderer.color = Color.white;
     }
 }
