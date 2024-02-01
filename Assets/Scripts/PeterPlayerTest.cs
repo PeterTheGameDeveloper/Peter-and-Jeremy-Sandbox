@@ -77,8 +77,8 @@ public class PeterPlayerTest : MonoBehaviour
         {
             Debug.Log("Hit!");
             EnemyController enemyToAttack = hit.transform.GetComponent<EnemyController>();
-            enemyToAttack.TakeDamage(currentWeaponDamage);
             enemyToAttack.TakeKnockback(currentKnockback, direction);
+            enemyToAttack.TakeDamage(currentWeaponDamage);
         }
     }
 }
