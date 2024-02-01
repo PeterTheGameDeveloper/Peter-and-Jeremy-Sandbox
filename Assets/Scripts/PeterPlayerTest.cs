@@ -10,14 +10,21 @@ public class PeterPlayerTest : MonoBehaviour
     public float xMoveSpeed = 0.25f;
     public float yMoveSpeed = 0.25f;
 
+    public int currentWeaponDamage = 5;
+    public float currentKnockback = 1.0f;
+
+    Rigidbody2D playerRigidBody;
+
     private void Start()
     {
         playerAnimator = GetComponent<Animator>();
+        playerRigidBody = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         playerAnimator.SetBool("IsRunning", false);
+        playerAnimator.SetBool("IsAttacking", false);
         Vector3 currentPlayerPosition = transform.position;
         Vector3 currentPlayerScale = transform.localScale;
 
@@ -49,8 +56,29 @@ public class PeterPlayerTest : MonoBehaviour
             currentPlayerPosition.y = transform.position.y + yMoveSpeed;
             playerAnimator.SetBool("IsRunning", true);
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AttackEnemy(Mathf.Sign(transform.localScale.x));
+            playerAnimator.SetBool("IsAttacking", true);
+        }
 
         transform.position = currentPlayerPosition;
-        Debug.Log(transform.position);
+        /*Debug.Log(transform.position);*/
+    }
+
+    public void AttackEnemy(float direction)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right * direction, 0.25f);
+        if (hit.collider == null)
+        {
+            return;
+        }
+        if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Debug.Log("Hit!");
+            EnemyController enemyToAttack = hit.transform.GetComponent<EnemyController>();
+            enemyToAttack.TakeDamage(currentWeaponDamage);
+            enemyToAttack.TakeKnockback(currentKnockback, direction);
+        }
     }
 }

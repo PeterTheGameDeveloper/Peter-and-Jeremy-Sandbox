@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
         /*Vector3 desiredPosition = new Vector3(playerCharacter.position.x + offset.x, playerCharacter.position.y + offset.y, transform.position.z);
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;*/
-        Debug.Log(Camera.main.orthographicSize);
+        /*Debug.Log(Camera.main.orthographicSize);*/
 
         float cameraSize = Camera.main.orthographicSize;
         float leftBound = transform.position.x - cameraSize;
