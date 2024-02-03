@@ -19,13 +19,21 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        enemyAnimator.SetBool("IsHit", false);
         if (playerTransform.position == null)
         {
             return;
         }
         Vector3 positionToMoveTowards = Vector3.Lerp(transform.position, playerTransform.position, enemyMoveSpeed);
+        if (positionToMoveTowards.x < transform.position.x && transform.localScale.x >= 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        else if (positionToMoveTowards.x >= transform.position.x && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
         transform.position = positionToMoveTowards;
+        DetermineAnimation();
 
         if (hitPoints <= 0)
         {
@@ -35,7 +43,7 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(int damageTaken)
     {
-        enemyAnimator.SetBool("IsHit", true);
+        enemyAnimator.SetTrigger("IsHit");
         StartCoroutine(FlashRed());
         hitPoints -= damageTaken;
     }
@@ -63,5 +71,20 @@ public class EnemyController : MonoBehaviour
             yield return null;
         }
         enemySpriteRenderer.color = Color.white;
+    }
+
+    private void DetermineAnimation()
+    {
+        Vector3 distanceFromPlayer = transform.position - playerTransform.transform.position;
+        if (Mathf.Abs(distanceFromPlayer.x) <= 0.5f && Mathf.Abs(distanceFromPlayer.y) <= 0.5f)
+        {
+            enemyAnimator.SetBool("IsIdle", true);
+            enemyAnimator.SetBool("IsWalking", false);
+        }
+        else
+        {
+            enemyAnimator.SetBool("IsIdle", false);
+            enemyAnimator.SetBool("IsWalking", true);
+        }
     }
 }
