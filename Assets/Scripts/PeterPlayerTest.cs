@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PeterPlayerTest : MonoBehaviour
 {
+    private UIController uiController;
     private Animator playerAnimator;
     private bool isRunning = false;
 
@@ -15,10 +16,13 @@ public class PeterPlayerTest : MonoBehaviour
 
     Rigidbody2D playerRigidBody;
 
+    private bool inventoryOpen = false;
+
     private void Start()
     {
         playerAnimator = GetComponent<Animator>();
         playerRigidBody = GetComponent<Rigidbody2D>();
+        uiController = GetComponent<UIController>();
     }
 
     private void Update()
@@ -60,6 +64,11 @@ public class PeterPlayerTest : MonoBehaviour
         {
             AttackEnemy(Mathf.Sign(transform.localScale.x));
             playerAnimator.SetBool("IsAttacking", true);
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            inventoryOpen = !inventoryOpen;
+            uiController.Inventory(inventoryOpen);
         }
 
         transform.position = currentPlayerPosition;
