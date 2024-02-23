@@ -16,8 +16,6 @@ public class PeterPlayerTest : MonoBehaviour
 
     Rigidbody2D playerRigidBody;
 
-    private bool inventoryOpen = false;
-
     private void Start()
     {
         playerAnimator = GetComponent<Animator>();
@@ -67,8 +65,7 @@ public class PeterPlayerTest : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            inventoryOpen = !inventoryOpen;
-            uiController.Inventory(inventoryOpen);
+            uiController.UIViewer("InventoryBackGround");
         }
 
         transform.position = currentPlayerPosition;
@@ -89,5 +86,19 @@ public class PeterPlayerTest : MonoBehaviour
             enemyToAttack.TakeKnockback(currentKnockback, direction);
             enemyToAttack.TakeDamage(currentWeaponDamage);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "weapon")
+        {
+            Debug.Log("Collided with weapon");
+            if (collision.gameObject.GetComponent<ItemPickups>() != null)
+            {
+                currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
+                currentKnockback += collision.gameObject.GetComponent<ItemPickups>().knockback;
+            }
+        }
+        Destroy(collision.gameObject);
     }
 }
