@@ -41,4 +41,21 @@ public class UIController : MonoBehaviour
                 targetObject.SetActive(true);
         }
     }
+    
+    public void AddItemToInventory()
+    {
+
+    }
+
+    public void AddItemToArmor(Collision2D itemToAdd)
+    {
+        Transform[] components = armor.transform.GetComponentsInChildren<Transform>();
+        foreach (Transform item in components)
+        {
+            if (item.name == itemToAdd.transform.tag)
+            {
+                item.GetComponent<Image>().sprite = itemToAdd.transform.GetComponent<SpriteRenderer>().sprite;
+            }
+        }
+    }
 }

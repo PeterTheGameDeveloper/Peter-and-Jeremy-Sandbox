@@ -13,6 +13,7 @@ public class PeterPlayerTest : MonoBehaviour
 
     public int currentWeaponDamage = 5;
     public float currentKnockback = 1.0f;
+    public int currentDefense = 10;
 
     Rigidbody2D playerRigidBody;
 
@@ -90,15 +91,24 @@ public class PeterPlayerTest : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "weapon")
+        if (collision.gameObject.GetComponent<ItemPickups>() != null)
         {
-            Debug.Log("Collided with weapon");
-            if (collision.gameObject.GetComponent<ItemPickups>() != null)
+            if (collision.transform.tag == "Weapon")
             {
                 currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
                 currentKnockback += collision.gameObject.GetComponent<ItemPickups>().knockback;
             }
+            else if (collision.transform.tag == "Breastplate")
+            {
+                currentDefense += collision.gameObject.GetComponent<ItemPickups>().defense;
+            }
+            else if (collision.transform.tag == "Shield")
+            {
+                currentDefense += collision.gameObject.GetComponent<ItemPickups>().defense;
+                currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
+            }
+            uiController.AddItemToArmor(collision);
+            Destroy(collision.gameObject);
         }
-        Destroy(collision.gameObject);
     }
 }

@@ -6,4 +6,5 @@ public class ItemPickups : MonoBehaviour
 {
     public int damage;
     public float knockback;
+    public int defense;
 }
