@@ -11,8 +11,9 @@ public class PeterPlayerTest : MonoBehaviour
     public float xMoveSpeed = 0.25f;
     public float yMoveSpeed = 0.25f;
 
-    public int currentWeaponDamage = 5;
+    public float currentWeaponDamage = 5.0f;
     public float currentKnockback = 1.0f;
+    public float currentDefense = 10.0f;
 
     Rigidbody2D playerRigidBody;
 
@@ -21,6 +22,7 @@ public class PeterPlayerTest : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         playerRigidBody = GetComponent<Rigidbody2D>();
         uiController = GetComponent<UIController>();
+        uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);
     }
 
     private void Update()
@@ -90,15 +92,25 @@ public class PeterPlayerTest : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "weapon")
+        if (collision.gameObject.GetComponent<ItemPickups>() != null)
         {
-            Debug.Log("Collided with weapon");
-            if (collision.gameObject.GetComponent<ItemPickups>() != null)
+            if (collision.transform.tag == "Weapon")
             {
                 currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
                 currentKnockback += collision.gameObject.GetComponent<ItemPickups>().knockback;
             }
+            else if (collision.transform.tag == "Breastplate")
+            {
+                currentDefense += collision.gameObject.GetComponent<ItemPickups>().defense;
+            }
+            else if (collision.transform.tag == "Shield")
+            {
+                currentDefense += collision.gameObject.GetComponent<ItemPickups>().defense;
+                currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
+            }
+            uiController.AddItemToArmor(collision);
+            uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);
+            Destroy(collision.gameObject);
         }
-        Destroy(collision.gameObject);
     }
 }

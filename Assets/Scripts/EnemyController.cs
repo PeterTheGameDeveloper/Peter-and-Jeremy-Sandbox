@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     public Transform playerTransform;
     public float enemyMoveSpeed = 0.05f;
-    public int hitPoints = 10;
+    public float hitPoints = 10.0f;
 
     SpriteRenderer enemySpriteRenderer;
     Animator enemyAnimator;
@@ -41,7 +41,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damageTaken)
+    public void TakeDamage(float damageTaken)
     {
         enemyAnimator.SetTrigger("IsHit");
         StartCoroutine(FlashRed());
