@@ -11,9 +11,9 @@ public class PeterPlayerTest : MonoBehaviour
     public float xMoveSpeed = 0.25f;
     public float yMoveSpeed = 0.25f;
 
-    public int currentWeaponDamage = 5;
+    public float currentWeaponDamage = 5.0f;
     public float currentKnockback = 1.0f;
-    public int currentDefense = 10;
+    public float currentDefense = 10.0f;
 
     Rigidbody2D playerRigidBody;
 
@@ -22,6 +22,7 @@ public class PeterPlayerTest : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         playerRigidBody = GetComponent<Rigidbody2D>();
         uiController = GetComponent<UIController>();
+        uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);
     }
 
     private void Update()
@@ -108,6 +109,7 @@ public class PeterPlayerTest : MonoBehaviour
                 currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
             }
             uiController.AddItemToArmor(collision);
+            uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);
             Destroy(collision.gameObject);
         }
     }
