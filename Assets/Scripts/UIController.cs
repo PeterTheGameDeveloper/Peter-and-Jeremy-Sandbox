@@ -10,11 +10,14 @@ public class UIController : MonoBehaviour
     public GameObject armor;
     public GameObject stats;
 
+    private Dictionary<int, GameObject> storedInventoryItems;
+
     private void Awake()
     {
         inventory.SetActive(false);
         armor.SetActive(false);
         stats.SetActive(false);
+        storedInventoryItems = new Dictionary<int, GameObject>();
     }
 
     public void UIViewer(string targetObjectName)
@@ -43,9 +46,29 @@ public class UIController : MonoBehaviour
         }
     }
     
-    public void AddItemToInventory()
+    public void AddItemToInventory(GameObject inventoryItem)
     {
+        // When a new item is added to the inventory, add it to a dictionary that stores the GameObjects for each inventory slot. Also update the sprite for that inventory slot
+        if (storedInventoryItems.Count < 6)
+        {
+            int nextAvailableSlot = 1;
+            while (storedInventoryItems.ContainsKey(nextAvailableSlot))
+            {
+                nextAvailableSlot++;
+            }
 
+            storedInventoryItems.Add(nextAvailableSlot, inventoryItem);
+
+            Transform[] components = inventory.transform.GetComponentsInChildren<Transform>();
+            foreach (Transform item in components)
+            {
+                if (item.name == nextAvailableSlot.ToString())
+                {
+                    item.GetComponent<Image>().sprite = inventoryItem.transform.GetComponent<SpriteRenderer>().sprite;
+                    item.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+            }
+        }
     }
 
     public void AddItemToArmor(Collision2D itemToAdd)
