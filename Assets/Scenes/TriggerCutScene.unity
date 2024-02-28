@@ -65253,6 +65253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d892a20cdad9c40bd7c24d8acd2ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camAnim: {fileID: 1617291595}
 --- !u!61 &2097259618
 BoxCollider2D:
   m_ObjectHideFlags: 0
