@@ -94,7 +94,8 @@ public class PeterPlayerTest : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<ItemPickups>() != null)
         {
-            if (collision.transform.tag == "Weapon")
+            uiController.AddItemToInventory(collision.gameObject);
+            /*if (collision.transform.tag == "Weapon")
             {
                 currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
                 currentKnockback += collision.gameObject.GetComponent<ItemPickups>().knockback;
@@ -110,7 +111,7 @@ public class PeterPlayerTest : MonoBehaviour
             }
             uiController.AddItemToArmor(collision);
             uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);
-            Destroy(collision.gameObject);
+            Destroy(collision.gameObject);*/
         }
     }
 }
