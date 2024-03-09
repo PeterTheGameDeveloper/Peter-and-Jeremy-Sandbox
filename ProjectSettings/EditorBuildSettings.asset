@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Basement.unity
     guid: a2d7482449142ea4e94ae6846529c6f7
+  - enabled: 1
+    path: Assets/Scenes/Land.unity
+    guid: 7e82600d64cf6434bb8c3e7fd24deacd
   m_configObjects: {}
