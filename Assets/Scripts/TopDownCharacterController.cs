@@ -10,9 +10,12 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private Animator animator;
 
+        public VectorValue startingPosition;//
+
         private void Start()
         {
             animator = GetComponent<Animator>();
+            transform.position = startingPosition.initialValue; //
         }
 
 
