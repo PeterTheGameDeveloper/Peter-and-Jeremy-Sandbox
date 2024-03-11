@@ -110,8 +110,8 @@ public class PeterPlayerTest : MonoBehaviour
                 currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
             }
             uiController.AddItemToArmor(collision);
-            uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);
-            Destroy(collision.gameObject);*/
+            uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);*/
+            collision.gameObject.SetActive(false);
         }
     }
 }
