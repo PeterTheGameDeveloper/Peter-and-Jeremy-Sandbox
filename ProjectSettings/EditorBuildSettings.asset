@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Land.unity
     guid: 7e82600d64cf6434bb8c3e7fd24deacd
+  - enabled: 1
+    path: Assets/Scenes/TriggerCutScene 1.unity
+    guid: 627f4a03e27e59e49a0793ec69672a36
   m_configObjects: {}
