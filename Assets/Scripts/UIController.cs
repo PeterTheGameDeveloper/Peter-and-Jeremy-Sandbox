@@ -13,17 +13,19 @@ public class UIController : MonoBehaviour
     public GameObject stats;
     public GameObject hoverBox;
     public GameObject rightClickMenu;
+    public GameObject examineBox;
 
+    private GameObject[] arrayOfUIObjects;
+    private List<bool> activeStates;
     private Dictionary<int, GameObject> storedInventoryItems;
+    private Dictionary<string, GameObject> equippedArmor;
+    private int buttonNumber;
 
     private void Awake()
     {
-        inventory.SetActive(false);
-        armor.SetActive(false);
-        stats.SetActive(false);
-        hoverBox.SetActive(false);
-        rightClickMenu.SetActive(false);
+        arrayOfUIObjects = CountUIObjects();
         storedInventoryItems = new Dictionary<int, GameObject>();
+        equippedArmor = new();
     }
 
     // General UI
@@ -54,14 +56,28 @@ public class UIController : MonoBehaviour
     }
 
     // Armor Management
-    public void AddItemToArmor(Collision2D itemToAdd)
+    public void AddItemToArmor()
     {
         Transform[] components = armor.transform.GetComponentsInChildren<Transform>();
         foreach (Transform item in components)
         {
-            if (item.name == itemToAdd.transform.tag)
+            if (item.name == storedInventoryItems[buttonNumber].tag)
             {
-                item.GetComponent<Image>().sprite = itemToAdd.transform.GetComponent<SpriteRenderer>().sprite;
+                item.GetComponent<Image>().sprite = storedInventoryItems[buttonNumber].transform.GetComponent<SpriteRenderer>().sprite;
+                equippedArmor.Add(storedInventoryItems[buttonNumber].tag, storedInventoryItems[buttonNumber]);
+                storedInventoryItems.Remove(buttonNumber);
+
+                Transform[] inventoryComponents = inventory.transform.GetComponentsInChildren<Transform>();
+                foreach (Transform inventoryItem in inventoryComponents)
+                {
+                    if (inventoryItem.name == buttonNumber.ToString())
+                    {
+                        inventoryItem.GetComponent<Image>().sprite = null;
+                        inventoryItem.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0f);
+                        StopDisplayRightClickMenu();
+                    }
+                }
+                break;
             }
         }
     }
@@ -167,26 +183,62 @@ public class UIController : MonoBehaviour
         hoverBox.SetActive(false);
     }
 
+    public void ExamineItem()
+    {
+        if (storedInventoryItems.ContainsKey(buttonNumber))
+        {
+            activeStates = new();
+            foreach (GameObject gameObject in arrayOfUIObjects)
+            {
+                activeStates.Add(gameObject.activeSelf);
+                gameObject.SetActive(false);
+
+                if (gameObject == examineBox)
+                {
+                    Transform[] childObjects = gameObject.GetComponentsInChildren<Transform>();
+                    int index = Array.FindIndex(childObjects, item => item.name == "ExamineText");
+                    childObjects[index].GetComponent<TextMeshProUGUI>().text = storedInventoryItems[buttonNumber].GetComponent<ItemPickups>().examineText;
+                    gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+    public void CloseExamineMenu()
+    {
+        int uiCount = 0;
+        foreach (GameObject item in arrayOfUIObjects)
+        {
+            item.SetActive(activeStates[uiCount]);
+            uiCount++;
+        }
+
+        examineBox.SetActive(false);
+        rightClickMenu.SetActive(false);
+    }
+
+    // Right click menu
     public void ShowRightClickMenu(GameObject inventoryButton)
     {
         if (Input.GetMouseButtonDown(1))
         {
-            rightClickMenu.transform.position = Input.mousePosition;
-            rightClickMenu.SetActive(true);
-
-            Transform selectedItem = null;
-            Transform[] rightClickMenuOptions;
-            Debug.Log("Right clicked an inventory item!");
-            foreach (int name in storedInventoryItems.Keys)
+            if (inventoryButton.GetComponent<Image>().sprite != null)
             {
-                if (name.ToString() == inventoryButton.name)
+                rightClickMenu.transform.position = Input.mousePosition;
+                rightClickMenu.SetActive(true);
+
+                Transform selectedItem = null;
+                Transform[] rightClickMenuOptions;
+
+                if (storedInventoryItems.ContainsKey(int.Parse(inventoryButton.name)))
                 {
-                    selectedItem = storedInventoryItems[name].transform;
+                    selectedItem = storedInventoryItems[int.Parse(inventoryButton.name)].transform;
+                    buttonNumber = int.Parse(inventoryButton.name);
                 }
                 rightClickMenuOptions = rightClickMenu.transform.GetComponentsInChildren<Transform>();
                 foreach (Transform item in rightClickMenuOptions)
                 {
-                    if (item.name == "Option1" & selectedItem.GetComponent<ItemPickups>())
+                    if (item.name == "Option1" && selectedItem.GetComponent<ItemPickups>())
                     {
                         item.GetComponentInChildren<TextMeshProUGUI>().text = "Equip " + selectedItem.name;
                     }
@@ -206,5 +258,27 @@ public class UIController : MonoBehaviour
     public void StopDisplayRightClickMenu()
     {
         rightClickMenu.SetActive(false);
+    }
+
+    // Helper functions
+    private GameObject[] CountUIObjects()
+    {
+        inventory.SetActive(true);
+        armor.SetActive(true);
+        stats.SetActive(true);
+        hoverBox.SetActive(true);
+        rightClickMenu.SetActive(true);
+        examineBox.SetActive(true);
+
+        arrayOfUIObjects = GameObject.FindGameObjectsWithTag("UI");
+
+        inventory.SetActive(false);
+        armor.SetActive(false);
+        stats.SetActive(false);
+        hoverBox.SetActive(false);
+        rightClickMenu.SetActive(false);
+        examineBox.SetActive(false);
+
+        return arrayOfUIObjects;
     }
 }
