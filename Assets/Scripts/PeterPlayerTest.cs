@@ -95,22 +95,6 @@ public class PeterPlayerTest : MonoBehaviour
         if (collision.gameObject.GetComponent<ItemPickups>() != null)
         {
             uiController.AddItemToInventory(collision.gameObject);
-            /*if (collision.transform.tag == "Weapon")
-            {
-                currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
-                currentKnockback += collision.gameObject.GetComponent<ItemPickups>().knockback;
-            }
-            else if (collision.transform.tag == "Breastplate")
-            {
-                currentDefense += collision.gameObject.GetComponent<ItemPickups>().defense;
-            }
-            else if (collision.transform.tag == "Shield")
-            {
-                currentDefense += collision.gameObject.GetComponent<ItemPickups>().defense;
-                currentWeaponDamage += collision.gameObject.GetComponent<ItemPickups>().damage;
-            }
-            uiController.AddItemToArmor(collision);
-            uiController.AddStats(currentWeaponDamage, currentKnockback, currentDefense);*/
             collision.gameObject.SetActive(false);
         }
     }
