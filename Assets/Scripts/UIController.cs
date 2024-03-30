@@ -14,6 +14,7 @@ public class UIController : MonoBehaviour
     public GameObject hoverBox;
     public GameObject rightClickMenu;
     public GameObject examineBox;
+    public PeterPlayerTest player;
 
     private GameObject[] arrayOfUIObjects;
     private List<bool> activeStates;
@@ -65,6 +66,9 @@ public class UIController : MonoBehaviour
             {
                 item.GetComponent<Image>().sprite = storedInventoryItems[buttonNumber].transform.GetComponent<SpriteRenderer>().sprite;
                 equippedArmor.Add(storedInventoryItems[buttonNumber].tag, storedInventoryItems[buttonNumber]);
+                AddStats(storedInventoryItems[buttonNumber].GetComponent<ItemPickups>().damage,
+                    storedInventoryItems[buttonNumber].GetComponent<ItemPickups>().knockback,
+                    storedInventoryItems[buttonNumber].GetComponent<ItemPickups>().defense);
                 storedInventoryItems.Remove(buttonNumber);
 
                 Transform[] inventoryComponents = inventory.transform.GetComponentsInChildren<Transform>();
@@ -85,12 +89,13 @@ public class UIController : MonoBehaviour
     // Stats Management
     public void AddStats(float damage, float knockback, float defense)
     {
+        List<float> currentPlayerStats = player.AddStats(damage, knockback, defense);
         Transform[] components = stats.transform.GetComponentsInChildren<Transform>();
         Dictionary<string, float> componentValues = new Dictionary<string, float> 
         {
-            { "AttackDamageText", damage },
-            { "KnockbackText", knockback },
-            { "DefenseText" , defense }
+            { "AttackDamageText", currentPlayerStats[0] },
+            { "KnockbackText", currentPlayerStats[1] },
+            { "DefenseText" , currentPlayerStats[2] }
         };
 
         foreach (string name in componentValues.Keys)
@@ -215,6 +220,25 @@ public class UIController : MonoBehaviour
 
         examineBox.SetActive(false);
         rightClickMenu.SetActive(false);
+    }
+
+    public void DropItem()
+    {
+        if (storedInventoryItems.ContainsKey(buttonNumber))
+        {
+            Transform[] components = inventory.transform.GetComponentsInChildren<Transform>();
+            foreach (Transform item in components)
+            {
+                if (item.name == buttonNumber.ToString())
+                {
+                    item.GetComponent<Image>().sprite = null;
+                    item.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+                }
+            }
+            storedInventoryItems[buttonNumber].SetActive(true);
+            storedInventoryItems[buttonNumber].transform.position = new Vector2(transform.position.x, transform.position.y - 2);
+            storedInventoryItems.Remove(buttonNumber);
+        }
     }
 
     // Right click menu

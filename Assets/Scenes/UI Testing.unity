@@ -23824,6 +23824,19 @@ MonoBehaviour:
   hoverBox: {fileID: 2114972985}
   rightClickMenu: {fileID: 1508224819}
   examineBox: {fileID: 967335946}
+  player: {fileID: 1593311974}
+--- !u!114 &1593311974 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4771173406505004293, guid: e127501c8e169e84098927925c5eadc9,
+    type: 3}
+  m_PrefabInstance: {fileID: 80559481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593311966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ac053f6fadccad41bc6cf2ee18ef857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1597320260
 GameObject:
   m_ObjectHideFlags: 0
@@ -26178,7 +26191,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2101733196}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1593311972}
+        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
+        m_MethodName: DropItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2101733196
 MonoBehaviour:
   m_ObjectHideFlags: 0
