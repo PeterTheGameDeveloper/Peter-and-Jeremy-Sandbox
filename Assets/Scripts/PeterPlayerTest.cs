@@ -98,4 +98,13 @@ public class PeterPlayerTest : MonoBehaviour
             collision.gameObject.SetActive(false);
         }
     }
+
+    public List<float> AddStats(float damage, float knockback, float defense)
+    {
+        currentWeaponDamage += damage;
+        currentKnockback += knockback;
+        currentDefense += defense;
+
+        return new List<float> { currentWeaponDamage, currentKnockback, currentDefense };
+    }
 }
